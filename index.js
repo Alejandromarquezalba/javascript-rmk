@@ -161,7 +161,7 @@ function validarNombre(nombre) {
     }
 }
 
-let firstchoise = prompt('Obtener el promedio de notas? \n Si \n No').toLowerCase();
+let firstchoise = prompt('¡Bienvenido!, Obtener el promedio de notas? \n Si \n No').toLowerCase();
 
 switch (firstchoise) {
     case 'si':
@@ -177,7 +177,7 @@ switch (firstchoise) {
                         //Validación CORRACTA
                         arrayej.push({nombre: nombre, nota: operacion});
                         console.log('La nota promedio de '+nombrefix+' es de: '+operacion);
-                    
+                        //Opción para mostrar la lista de alumnos completa
                         let general = prompt('Desea ver la lista completa de notas de alumnos? \n Aceptar \n Cancelar').toLowerCase();
                         switch(general){
                             case 'aceptar':
@@ -193,13 +193,35 @@ switch (firstchoise) {
                                 console.log('Error, opción de elección de notas finales inválida, por favor eliga entre Aceptar o Cancelar');
                             break;
                             }
+                        //Opción para buscar a un alumno en específico
+                        let buscaralumno = prompt('Desea buscar algún alumno en partícular? \n Si \n No').toLowerCase().trim();
+                        switch(buscaralumno){
+                            case 'si':
+                                let busqueda = prompt('Cual es el nombre del alumno que quieres encontrar').toLowerCase().trim();
+                                let findMyTest = arrayej.find(i=>i.nombre===busqueda)
+
+                                if(findMyTest){
+                                    console.log('Se ha encontrado al alumno '+busqueda+' ha finalizado con una nota de '+operacion)
+                                } else {
+                                    console.log('Archivo no encontrado, error 404')
+                                }
+                            break;
+                            case 'no':
+                            break;
+                            default:
+                                console.log('Error, opción de confirmación de busqueda invalido');
+                            break;
+                        }
                         } else {
                         //ERROR
                         console.log("Error, algún valor ha sido colocado erroneamente. Tenga en cuenta las siguientes pautas: \n 1-El nombre no debe ser ni números ni caracteres especiales ni espacios en blanco \n 2-Las notas deben ser números, entre el 1 y 10, no puede ser ni más ni menos ni tampoco letras, o espacios en blanco \n 3-No dar en 'Aceptar' sin haber colocado un valor previamente");
                     }
                 }
                 //LLAMADA
-                calculador(prompt('Dame el nombre'), prompt('Dame la nota 1'), prompt('Dame la nota 2'), prompt('Dame la nota 3'));
+                calculador(prompt('Introduzca nombre').toLowerCase().trim(), 
+                prompt('Introduzca nota total de Parciales, del \n 0 al 10'), 
+                prompt('Introduzca nota total de Proyectos, del \n 0 al 10'), 
+                prompt('Introduzca nota total de EXÁMENES, del \n 0 al 10'));
                 break;
 
                 case 'no':
@@ -223,7 +245,6 @@ switch (firstchoise) {
 }
 
   
-
 
 
 
