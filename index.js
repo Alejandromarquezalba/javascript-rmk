@@ -132,7 +132,8 @@ while(dowhilecontador==1){
     console.log('El valor actual del contador es '+dowhilecontador);
 }
 */
-
+/*
+const arraynum = [1,2,3,4,5];
 const profesor = {
     nombre: 'Armando Esteban',
     apellido: 'Quito',
@@ -243,8 +244,45 @@ switch (firstchoise) {
         console.log('Dato invalido')
     break;
 }
+*/
 
-  
+
+/*
+//AHORA HAY QUE AGREGAR:------------------------------------------------------
+//-FUNCION ORDEN SUPERIOR (2)
+//-AGREGAR EVENTOS
+//-MANEJAR DOM
+//-USAR JSON Y STORAGE
+//-YA NO ESTA PERMITIDO USAR LOS ALERT Y PROMPT, en vez de eso usa INPUT y manejalo con el DOM
+
+//-idea mia: Podes usar un FIND para encontrar a un alumno en particular
+//-idea mia: Podes usar también el FILTER para mostrar a los alumnos aprobados solamente
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
