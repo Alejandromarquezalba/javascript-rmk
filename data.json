@@ -1,0 +1,20 @@
+[
+    {"nombre": "Wachimingo", 
+    "nota_parc": 10, 
+    "nota_proj": 10, 
+    "nota_exam": 10
+    }, 
+    {"nombre": "Armando Estaban Quito", 
+    "nota_parc": 8, 
+    "nota_proj": 7, 
+    "nota_exam": 9
+    }, 
+    {"nombre": "El Brashan", 
+    "nota_parc": 2, 
+    "nota_proj": 3, 
+    "nota_exam": 1
+    }
+]
+
+
+

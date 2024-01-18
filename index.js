@@ -255,30 +255,145 @@ switch (firstchoise) {
 //-USAR JSON Y STORAGE
 //-YA NO ESTA PERMITIDO USAR LOS ALERT Y PROMPT, en vez de eso usa INPUT y manejalo con el DOM
 
-//-idea mia: Podes usar un FIND para encontrar a un alumno en particular
-//-idea mia: Podes usar también el FILTER para mostrar a los alumnos aprobados solamente
+//-idea mia: Podes usar un FIND(funcion sup) para encontrar a un alumno en particular
+//-idea mia: Podes usar también el FILTER(funcion sup) para mostrar a los alumnos aprobados solamente
 
 */
 
 
 
+const alumnos = [
+    {nombre: 'Wachimingo', nota_parc: 10, nota_proj: 10, nota_exam: 10},
+    {nombre: 'Armando Estaban Quito', nota_parc: 8, nota_proj: 7, nota_exam: 9}, {nombre: 'El Brashan', nota_parc: 2, nota_proj: 3, nota_exam: 1}]
+const alumnosStringy = JSON.stringify(alumnos);
+
+
+//Local storage
+
+localStorage.setItem('Alumnos',alumnosStringy);
+
+
+//Agarrar primero selectores
+const containBuscar = document.querySelector('#container_search');
+const lista = document.querySelector('.alternating-colors')
+
+const valorBuscar = document.querySelector('#input_search');
+const valorAgregar = document.querySelector('#input_add');
+const nota1 = document.querySelector('#nota_value1');
+const nota2 = document.querySelector('#nota_value2');
+const nota3 = document.querySelector('#nota_value3');
+
+const clickBuscar = document.querySelector('#button_search');
+const clickAgregar = document.querySelector('#button_add');
 
 
 
 
+//Mensaje de que no se encontró al buscar o que no se pudo agregar:
+const noSeEncontro = document.createElement('p');
+noSeEncontro.innerText = 'No se encontró al alumno'
+
+
+
+const nombreEncontrado = localStorage.getItem('Pepito');
+
+let alumnoValor = '';
+let alumnoAgregado = '';
+let nota1Valor = '';
+let nota2Valor = '';
+let nota3Valor = '';
+
+//Inputs y botones
+nota1.addEventListener('input', (event)=>{
+    nota1Valor = event.target.value
+})
+nota2.addEventListener('input', (event)=>{
+    nota2Valor = event.target.value
+})
+nota3.addEventListener('input', (event)=>{
+    nota3Valor = event.target.value
+})
 
 
 
 
+valorBuscar.addEventListener('input', (event)=>{
+    alumnoValor = event.target.value
+})
+clickBuscar.addEventListener('click', (event)=>{
+    console.log(alumnoValor)
+})
+valorAgregar.addEventListener('input',(event)=>{
+    alumnoAgregado = event.target.value;
+})
+clickAgregar.addEventListener('click',(event)=>{
+
+    if(alumnoAgregado && nota1Valor && nota2Valor && nota3Valor){
+        console.log('hurra, existes')
+    }else{
+        const errormessage = document.createElement('p');
+        errormessage.innerText = 'Error, por favor coloque valores validos'
+        valorBuscar.appendChild(errormessage);
+        console.log('error')
+    }
+
+
+    /*
+    localStorage.setItem('Nombre',alumnoAgregado);
+
+    let nuevo_li = document.createElement('li');
+    let nuevo_strong = document.createElement('strong');
+    let nuevo_p = document.createElement('p');
+    let nuevo_li2 = document.createElement('li');
+    let nuevo_strong2 = document.createElement('strong');
+    let nuevo_p2 = document.createElement('p');
+    let nuevo_li3 = document.createElement('li');
+    let nuevo_strong3 = document.createElement('strong');
+    let nuevo_p3 = document.createElement('p');
+    let nuevo_li4 = document.createElement('li');
+    let nuevo_strong4 = document.createElement('strong');
+    let nuevo_p4 = document.createElement('p');
+    let nuevo_li5 = document.createElement('li');
+    let nuevo_strong5 = document.createElement('strong');
+    let nuevo_p5 = document.createElement('p');
+
+    nuevo_strong.innerText = 'Nombre: ';
+    nuevo_p.innerText = alumnoAgregado;
+
+    nuevo_strong2.innerText = 'Nota de Parciales(equivalente al 35% de la nota Final): ';
+    nuevo_p2.innerText = nota1Valor;
+
+    nuevo_strong3.innerText = 'Nota de Proyectos(equivalente al 20% de la nota Final): ';
+    nuevo_p3.innerText = nota2Valor;
+
+    nuevo_strong4.innerText = 'Nota de Examenes(equivalente al 45% de la nota Final): ';
+    nuevo_p4.innerText = nota3Valor;
+
+    nuevo_strong5.innerText = 'Nota Final: ';
+    nuevo_p5.innerText = nota1Valor*0.35+nota2Valor*0.20+nota3Valor*0.45;;
+
+    nuevo_li.appendChild(nuevo_strong);
+    nuevo_li.appendChild(nuevo_p);
+    nuevo_li.appendChild(nuevo_strong2);
+    nuevo_li.appendChild(nuevo_p2);
+    nuevo_li.appendChild(nuevo_strong3);
+    nuevo_li.appendChild(nuevo_p3);
+    nuevo_li.appendChild(nuevo_strong4);
+    nuevo_li.appendChild(nuevo_p4);
+    nuevo_li.appendChild(nuevo_strong5);
+    nuevo_li.appendChild(nuevo_p5);
+
+    lista.appendChild(nuevo_li);
+    */
+})
+
+console.log()
 
 
 
-
-
-
-
-
-
+//-------------------------------------------------------------------------------
+//MIS DUDAS: como hacer mas optimo ese codigo
+//Como hacer una busqueda que te lleve a otra seccion de la pagina, no links, sino busqueda
 
 
 
