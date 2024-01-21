@@ -249,11 +249,14 @@ switch (firstchoise) {
 
 /*
 //AHORA HAY QUE AGREGAR:------------------------------------------------------
-//-FUNCION ORDEN SUPERIOR (2)
-//-AGREGAR EVENTOS
-//-MANEJAR DOM
-//-USAR JSON Y STORAGE
+
+//-FUNCION ORDEN SUPERIOR(2)--FIND y FILTER
+//-AGREGAR EVENTOS -----------YA ESTA
+//-MANEJAR DOM     -----------YA ESTA
+//-USAR JSON Y STORAGE  ------casi esta (esta aplicado pero casi nada, terminalo)
 //-YA NO ESTA PERMITIDO USAR LOS ALERT Y PROMPT, en vez de eso usa INPUT y manejalo con el DOM
+//MANDALE UN POQUITO MAS DE LOCAL STORAGEE
+
 
 //-idea mia: Podes usar un FIND(funcion sup) para encontrar a un alumno en particular
 //-idea mia: Podes usar también el FILTER(funcion sup) para mostrar a los alumnos aprobados solamente
@@ -264,18 +267,26 @@ switch (firstchoise) {
 
 const alumnos = [
     {nombre: 'Wachimingo', nota_parc: 10, nota_proj: 10, nota_exam: 10},
-    {nombre: 'Armando Estaban Quito', nota_parc: 8, nota_proj: 7, nota_exam: 9}, {nombre: 'El Brashan', nota_parc: 2, nota_proj: 3, nota_exam: 1}]
-const alumnosStringy = JSON.stringify(alumnos);
+    {nombre: 'Armando Esteban Quito', nota_parc: 8, nota_proj: 7, nota_exam: 9}, {nombre: 'El Brashan', nota_parc: 2, nota_proj: 3, nota_exam: 1}]
+
+
+
+
 
 
 //Local storage
-
+const alumnosStringy = JSON.stringify(alumnos);
 localStorage.setItem('Alumnos',alumnosStringy);
-
+const getAlumnos = localStorage.getItem('Alumnos');
+const alumnosParse = JSON.parse(getAlumnos)
 
 //Agarrar primero selectores
 const containBuscar = document.querySelector('#container_search');
+const containAgregar = document.querySelector('#container_add')
 const lista = document.querySelector('.alternating-colors')
+const errorSpace = document.querySelector('#error_space_add')
+const errorSpace2 = document.querySelector('#error_space_search')
+const blankspace = document.querySelector('#space_search')
 
 const valorBuscar = document.querySelector('#input_search');
 const valorAgregar = document.querySelector('#input_add');
@@ -291,9 +302,6 @@ const clickAgregar = document.querySelector('#button_add');
 
 //Mensaje de que no se encontró al buscar o que no se pudo agregar:
 const noSeEncontro = document.createElement('p');
-noSeEncontro.innerText = 'No se encontró al alumno'
-
-
 
 const nombreEncontrado = localStorage.getItem('Pepito');
 
@@ -313,82 +321,126 @@ nota2.addEventListener('input', (event)=>{
 nota3.addEventListener('input', (event)=>{
     nota3Valor = event.target.value
 })
-
-
-
-
 valorBuscar.addEventListener('input', (event)=>{
     alumnoValor = event.target.value
 })
 clickBuscar.addEventListener('click', (event)=>{
-    console.log(alumnoValor)
+    event.preventDefault();
+    //------------------------------------------------------------
+    const buscarEnLocal = localStorage.getItem('Alumnos')
+    const convertirLocal = JSON.parse(buscarEnLocal);
+
+
+
+    const buscarEstudiante = convertirLocal.some((alumno)=>alumno.nombre===alumnoValor)
+
+    
+    
+    console.log(buscarEstudiante)
+    
+        if(buscarEstudiante){
+            errorSpace2.innerHTML='<p></p>'
+            blankspace.innerHTML='<p>El Alumno: '+alumnoValor+' si se encuentra actualmente inscripto</p>';
+            blankspace.className='find_css'
+        } else {
+            blankspace.innerHTML='<p></p>'
+            errorSpace2.innerHTML='<p>No se ha encontrado al Alumno o el nombre es invalido</p>'
+            errorSpace2.className='error_css'
+            console.log('error en el ELSE del click BUSCAR')
+        }
+
+    
+    //------------------------------------------------------------
 })
 valorAgregar.addEventListener('input',(event)=>{
     alumnoAgregado = event.target.value;
 })
 clickAgregar.addEventListener('click',(event)=>{
-
-    if(alumnoAgregado && nota1Valor && nota2Valor && nota3Valor){
+    event.preventDefault();
+    
+    if(alumnoAgregado && nota1Valor && nota2Valor && nota3Valor && nota1Valor>=0 && nota1Valor<=10 && nota2Valor>=0 && nota2Valor<=10 && nota3Valor>=0 && nota1Valor<=10)
+        {
+        errorSpace.remove();
+        const nuevainfo = {nombre: alumnoAgregado, nota_parc: nota1Valor, nota_proj: nota2Valor, nota_exam: nota3Valor}
+        const obtenerStorageParse = JSON.parse(localStorage.getItem('Alumnos'))
+        obtenerStorageParse.push(nuevainfo);
+        localStorage.setItem('Alumnos',JSON.stringify(obtenerStorageParse))
         console.log('hurra, existes')
+        console.log(obtenerStorageParse)
+        //Creacion
+        let nuevo_li = document.createElement('li');
+        let nuevo_strong = document.createElement('strong');
+        let nuevo_p = document.createElement('p');
+
+        let nuevo_strong2 = document.createElement('strong');
+        let nuevo_p2 = document.createElement('p');
+
+        let nuevo_strong3 = document.createElement('strong');
+        let nuevo_p3 = document.createElement('p');
+
+        let nuevo_strong4 = document.createElement('strong');
+        let nuevo_p4 = document.createElement('p');
+
+        let nuevo_strong5 = document.createElement('strong');
+        let nuevo_p5 = document.createElement('p');
+
+        nuevo_strong.innerText = 'Nombre: ';
+        nuevo_p.innerText = alumnoAgregado;
+
+        nuevo_strong2.innerText = 'Nota de Parciales(equivalente al 35% de la nota Final): ';
+        nuevo_p2.innerText = nota1Valor;
+
+        nuevo_strong3.innerText = 'Nota de Proyectos(equivalente al 20% de la nota Final): ';
+        nuevo_p3.innerText = nota2Valor;
+
+        nuevo_strong4.innerText = 'Nota de Examenes(equivalente al 45% de la nota Final): ';
+        nuevo_p4.innerText = nota3Valor;
+
+        nuevo_strong5.innerText = 'Nota Final: ';
+        nuevo_p5.innerText = nota1Valor*0.35+nota2Valor*0.20+nota3Valor*0.45;;
+
+        //Incorporacion
+        nuevo_li.appendChild(nuevo_strong);
+        nuevo_li.appendChild(nuevo_p);
+        nuevo_li.appendChild(nuevo_strong2);
+        nuevo_li.appendChild(nuevo_p2);
+        nuevo_li.appendChild(nuevo_strong3);
+        nuevo_li.appendChild(nuevo_p3);
+        nuevo_li.appendChild(nuevo_strong4);
+        nuevo_li.appendChild(nuevo_p4);
+        nuevo_li.appendChild(nuevo_strong5);
+        nuevo_li.appendChild(nuevo_p5);
+        nuevo_li.appendChild(borrarAlumnoBtn());
+
+        lista.appendChild(nuevo_li);
+        
+        alumnoValor.value = '';
+        alumnoAgregado.value = '';
+        nota1Valor.value = '';
+        nota2Valor.value = '';
+        nota3Valor.value = '';
     }else{
-        const errormessage = document.createElement('p');
-        errormessage.innerText = 'Error, por favor coloque valores validos'
-        valorBuscar.appendChild(errormessage);
+        errorSpace.innerHTML = '<p>Error, por favor coloque valores validos</p>'
+        errorSpace.className = 'error_css'
         console.log('error')
     }
-
-
-    /*
-    localStorage.setItem('Nombre',alumnoAgregado);
-
-    let nuevo_li = document.createElement('li');
-    let nuevo_strong = document.createElement('strong');
-    let nuevo_p = document.createElement('p');
-    let nuevo_li2 = document.createElement('li');
-    let nuevo_strong2 = document.createElement('strong');
-    let nuevo_p2 = document.createElement('p');
-    let nuevo_li3 = document.createElement('li');
-    let nuevo_strong3 = document.createElement('strong');
-    let nuevo_p3 = document.createElement('p');
-    let nuevo_li4 = document.createElement('li');
-    let nuevo_strong4 = document.createElement('strong');
-    let nuevo_p4 = document.createElement('p');
-    let nuevo_li5 = document.createElement('li');
-    let nuevo_strong5 = document.createElement('strong');
-    let nuevo_p5 = document.createElement('p');
-
-    nuevo_strong.innerText = 'Nombre: ';
-    nuevo_p.innerText = alumnoAgregado;
-
-    nuevo_strong2.innerText = 'Nota de Parciales(equivalente al 35% de la nota Final): ';
-    nuevo_p2.innerText = nota1Valor;
-
-    nuevo_strong3.innerText = 'Nota de Proyectos(equivalente al 20% de la nota Final): ';
-    nuevo_p3.innerText = nota2Valor;
-
-    nuevo_strong4.innerText = 'Nota de Examenes(equivalente al 45% de la nota Final): ';
-    nuevo_p4.innerText = nota3Valor;
-
-    nuevo_strong5.innerText = 'Nota Final: ';
-    nuevo_p5.innerText = nota1Valor*0.35+nota2Valor*0.20+nota3Valor*0.45;;
-
-    nuevo_li.appendChild(nuevo_strong);
-    nuevo_li.appendChild(nuevo_p);
-    nuevo_li.appendChild(nuevo_strong2);
-    nuevo_li.appendChild(nuevo_p2);
-    nuevo_li.appendChild(nuevo_strong3);
-    nuevo_li.appendChild(nuevo_p3);
-    nuevo_li.appendChild(nuevo_strong4);
-    nuevo_li.appendChild(nuevo_p4);
-    nuevo_li.appendChild(nuevo_strong5);
-    nuevo_li.appendChild(nuevo_p5);
-
-    lista.appendChild(nuevo_li);
-    */
 })
 
-console.log()
+function borrarAlumnoBtn (){
+    const botonDeBorrar = document.createElement('button');
+    botonDeBorrar.textContent = 'Remover alumno';
+    botonDeBorrar.className = 'btn_borrar';
+    botonDeBorrar.addEventListener('click', (element)=>{
+        const obtenerStorageParse2 = JSON.parse(localStorage.getItem('Alumnos'))
 
+        obtenerStorageParse2.pop();
+
+        localStorage.setItem('Alumnos',JSON.stringify(obtenerStorageParse2))
+        const item = element.target.parentElement;
+        lista.removeChild(item);
+    })
+    return botonDeBorrar;
+}
 
 
 //-------------------------------------------------------------------------------
