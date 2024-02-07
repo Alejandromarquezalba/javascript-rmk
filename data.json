@@ -1,20 +1,21 @@
 [
-    {"nombre": "Wachimingo", 
+    {"nombre": "Pepe", 
     "nota_parc": 10, 
     "nota_proj": 10, 
-    "nota_exam": 10
+    "nota_exam": 10,
+    "notafinal": 10
     }, 
-    {"nombre": "Armando Estaban Quito", 
+    {"nombre": "Jorge", 
     "nota_parc": 8, 
     "nota_proj": 7, 
-    "nota_exam": 9
+    "nota_exam": 9,
+    "notafinal": 8.25
     }, 
-    {"nombre": "El Brashan", 
+    {"nombre": "Brian", 
     "nota_parc": 2, 
     "nota_proj": 3, 
-    "nota_exam": 1
+    "nota_exam": 1,
+    "notafinal": 1.75
     }
 ]
-
-
 

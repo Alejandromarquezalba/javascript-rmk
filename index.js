@@ -1,12 +1,52 @@
-const alumnos = [
-    {nombre: 'Wachimingo', nota_parc: 10, nota_proj: 10, nota_exam: 10, notafinal: 10},
-    {nombre: 'Armando Esteban Quito', nota_parc: 8, nota_proj: 7, nota_exam: 9, notafinal: 8.25}, {nombre: 'El Brashan', nota_parc: 2, nota_proj: 3, nota_exam: 1, notafinal: 1.75}]
-//Local storage
-const alumnosStringy = JSON.stringify(alumnos);
-localStorage.setItem('Alumnos',alumnosStringy);
 
-const getAlumnos = localStorage.getItem('Alumnos');
-const alumnosParse = JSON.parse(getAlumnos)
+//---------------------------------------------------------------------
+
+//Traer data de JSON, recorrer JSON mostrando cada elemento por HTML y guardar en STORAGE
+fetch('./data.json')
+    .then(answer=>{return answer.json()})
+    .then((infojson)=>{
+        const containLista = document.querySelector('.alternating-colors')
+        infojson.forEach((alu)=>{
+            const li = document.createElement('li')
+            const strong1 = document.createElement('strong')
+            const strong2 = document.createElement('strong')
+            const strong3 = document.createElement('strong')
+            const strong4 = document.createElement('strong')
+            const strong5 = document.createElement('strong')
+            const p1 = document.createElement('p')
+            const p2 = document.createElement('p')
+            const p3 = document.createElement('p')
+            const p4 = document.createElement('p')
+            const p5 = document.createElement('p')
+            strong1.innerText=alu.nombre
+            strong2.innerText=alu.nota_parc
+            strong3.innerText=alu.nota_proj
+            strong4.innerText=alu.nota_exam
+            strong5.innerText=alu.notafinal
+            p1.innerText='Nombre: '
+            p2.innerText='Nota de Parciales(equivalente al 35% de la nota Final): '
+            p3.innerText='Nota de Proyectos(equivalente al 20% de la nota Final): '
+            p4.innerText='Nota de Examenes(equivalente al 45% de la nota Final): '
+            p5.innerText='Nota Final: '
+            p1.appendChild(strong1)
+            p2.appendChild(strong2)
+            p3.appendChild(strong3)
+            p4.appendChild(strong4)
+            p5.appendChild(strong5)
+            li.appendChild(p1)
+            li.appendChild(p2)
+            li.appendChild(p3)
+            li.appendChild(p4)
+            li.appendChild(p5)
+            containLista.appendChild(li)
+        })
+        const stringyData = JSON.stringify(infojson)
+        localStorage.setItem('Alumnos',stringyData)
+    })
+    .catch(()=>console.log('err al traer la informacion de json'))
+
+//Boton de prueba de JSON
+const fetchjson = document.querySelector('.boton_prueba_fetchjson')
 
 //Selectores
 const containBuscar = document.querySelector('#container_search');
@@ -26,9 +66,6 @@ const nota2 = document.querySelector('#nota_value2');
 const nota3 = document.querySelector('#nota_value3');
 const clickBuscar = document.querySelector('#button_search');
 const clickAgregar = document.querySelector('#button_add');
-//Mensaje de que no se encontró al buscar o que no se pudo agregar:
-const noSeEncontro = document.createElement('p');
-const nombreEncontrado = localStorage.getItem('Pepito');
 //Variables a llenar
 let alumnoValor = '';
 let alumnoAgregado = '';
@@ -59,13 +96,13 @@ aprobados2.addEventListener('click', (event)=>{
 })
 
 nota1.addEventListener('input', (event)=>{
-    nota1Valor = event.target.value
+    nota1Valor = parseFloat(event.target.value)
 })
 nota2.addEventListener('input', (event)=>{
-    nota2Valor = event.target.value
+    nota2Valor = parseFloat(event.target.value)
 })
 nota3.addEventListener('input', (event)=>{
-    nota3Valor = event.target.value
+    nota3Valor = parseFloat(event.target.value)
 })
 valorBuscar.addEventListener('input', (event)=>{
     alumnoValor = event.target.value
@@ -77,14 +114,17 @@ clickBuscar.addEventListener('click', (event)=>{
     const buscarEstudiante = convertirLocal.some((alumno)=>alumno.nombre===alumnoValor)
     console.log(buscarEstudiante)
         if(buscarEstudiante){
-            errorSpace2.innerHTML='<p></p>'
-            blankspace.innerHTML='<p>El Alumno: '+alumnoValor+' si se encuentra actualmente inscripto</p>';
-            blankspace.className='find_css'
+            Swal.fire({
+                title: "Busqueda exitosa",
+                text: "Se ha encontrado inscripto el alumno: "+alumnoValor,
+                icon: "success"
+              });
         } else {
-            blankspace.innerHTML='<p></p>'
-            errorSpace2.innerHTML='<p>No se ha encontrado al Alumno o el nombre es invalido</p>'
-            errorSpace2.className='error_css'
-            console.log('error en el ELSE del click BUSCAR')
+            Swal.fire({
+                title: "Sin resultados",
+                text: "No se ha encontrado al alumno: "+ alumnoValor,
+                icon: "question"
+              });
         }
 })
 valorAgregar.addEventListener('input',(event)=>{
@@ -92,47 +132,45 @@ valorAgregar.addEventListener('input',(event)=>{
 })
 clickAgregar.addEventListener('click',(event)=>{
     event.preventDefault();
-    
-    if(alumnoAgregado && nota1Valor && nota2Valor && nota3Valor && nota1Valor>=0 && nota1Valor<=10 && nota2Valor>=0 && nota2Valor<=10 && nota3Valor>=0 && nota1Valor<=10)
+    if(/^[A-Za-z\s]+$/.test(alumnoAgregado.trim()) && nota1Valor && nota2Valor && nota3Valor && nota1Valor>0 && nota1Valor<=10 && nota2Valor>0 && nota2Valor<=10 && nota3Valor>0 && nota3Valor<=10)
         {
-        errorSpace.remove();
+        Swal.fire(alumnoAgregado+" ha sido agregado!");
+            const toFixed = nota1Valor*0.35+nota2Valor*0.20+nota3Valor*0.45
+            const notaFValor = toFixed.toFixed(2)
         //Creacion de nodo
-        let nuevo_li = document.createElement('li');
-        let nuevo_strong = document.createElement('strong');
-        let nuevo_p = document.createElement('p');
-        let nuevo_strong2 = document.createElement('strong');
-        let nuevo_p2 = document.createElement('p');
-        let nuevo_strong3 = document.createElement('strong');
-        let nuevo_p3 = document.createElement('p');
-        let nuevo_strong4 = document.createElement('strong');
-        let nuevo_p4 = document.createElement('p');
-        let nuevo_strong5 = document.createElement('strong');
-        let nuevo_p5 = document.createElement('p');
-        //Creacion de texto del nodo
-        nuevo_strong.innerText = 'Nombre: ';
-        nuevo_p.innerText = alumnoAgregado;
-        nuevo_strong2.innerText = 'Nota de Parciales(equivalente al 35% de la nota Final): ';
-        nuevo_p2.innerText = nota1Valor;
-        nuevo_strong3.innerText = 'Nota de Proyectos(equivalente al 20% de la nota Final): ';
-        nuevo_p3.innerText = nota2Valor;
-        nuevo_strong4.innerText = 'Nota de Examenes(equivalente al 45% de la nota Final): ';
-        nuevo_p4.innerText = nota3Valor;
-        nuevo_strong5.innerText = 'Nota Final: ';
-        nuevo_p5.innerText = nota1Valor*0.35+nota2Valor*0.20+nota3Valor*0.45;
-        notaFValor = nota1Valor*0.35+nota2Valor*0.20+nota3Valor*0.45;
-        //Incorporacion de etiquetas a otras
-        nuevo_li.appendChild(nuevo_strong);
-        nuevo_li.appendChild(nuevo_p);
-        nuevo_li.appendChild(nuevo_strong2);
-        nuevo_li.appendChild(nuevo_p2);
-        nuevo_li.appendChild(nuevo_strong3);
-        nuevo_li.appendChild(nuevo_p3);
-        nuevo_li.appendChild(nuevo_strong4);
-        nuevo_li.appendChild(nuevo_p4);
-        nuevo_li.appendChild(nuevo_strong5);
-        nuevo_li.appendChild(nuevo_p5);
-        nuevo_li.appendChild(borrarAlumnoBtn());
-        lista.appendChild(nuevo_li);
+        const li = document.createElement('li')
+            const strong1 = document.createElement('strong')
+            const strong2 = document.createElement('strong')
+            const strong3 = document.createElement('strong')
+            const strong4 = document.createElement('strong')
+            const strong5 = document.createElement('strong')
+            const p1 = document.createElement('p')
+            const p2 = document.createElement('p')
+            const p3 = document.createElement('p')
+            const p4 = document.createElement('p')
+            const p5 = document.createElement('p')
+            strong1.innerText=alumnoAgregado
+            strong2.innerText=nota1Valor
+            strong3.innerText=nota2Valor
+            strong4.innerText=nota3Valor
+            strong5.innerText=notaFValor;
+            p1.innerText='Nombre: '
+            p2.innerText='Nota de Parciales(equivalente al 35% de la nota Final): '
+            p3.innerText='Nota de Proyectos(equivalente al 20% de la nota Final): '
+            p4.innerText='Nota de Examenes(equivalente al 45% de la nota Final): '
+            p5.innerText='Nota de Final: '
+            p1.appendChild(strong1)
+            p2.appendChild(strong2)
+            p3.appendChild(strong3)
+            p4.appendChild(strong4)
+            p5.appendChild(strong5)
+            li.appendChild(p1)
+            li.appendChild(p2)
+            li.appendChild(p3)
+            li.appendChild(p4)
+            li.appendChild(p5)
+            lista.appendChild(li)
+            li.appendChild(borrarAlumnoBtn());
         //Guardado de info en el storage
         const nuevainfo = {nombre: alumnoAgregado, nota_parc: nota1Valor, nota_proj: nota2Valor, nota_exam: nota3Valor, notafinal: notaFValor}
         const obtenerStorageParse = JSON.parse(localStorage.getItem('Alumnos'))
@@ -141,9 +179,11 @@ clickAgregar.addEventListener('click',(event)=>{
         console.log('hurra, existes')
         console.log(obtenerStorageParse)
     }else{
-        errorSpace.innerHTML = '<p>Error, por favor coloque valores validos</p>'
-        errorSpace.className = 'error_css'
-        console.log('error')
+        Swal.fire({
+            title: "Datos invalidos",
+            text: "Los datos proporcionados son incorrectos, asegurese todos los espacios estén llenos, el nombre no debe tener caracteres especiales ni números y las notas deben ser mayor a 0 hasta un máximo de 10",
+            icon: "error"
+          });
     }
 })
 function borrarAlumnoBtn (){
@@ -161,9 +201,6 @@ function borrarAlumnoBtn (){
     })
     return botonDeBorrar;
 }
-
-
-
 
 
 
